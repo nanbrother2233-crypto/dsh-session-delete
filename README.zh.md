@@ -106,8 +106,12 @@ dsh plugin add --save-exact .\dsh-session-delete-0.1.0.tgz   # 或这个文件�
 
 ## 开发
 
-见 [AGENTS.md](AGENTS.md)——其中包含本仓库绝不能打破的一条规则：工作区目录树是环状的，
-永远不要递归遍历它。
+**绝不要递归遍历工作区目录树。** `.devhome/` 是用于在不发布的情况下加载本插件的临时 DSH
+home，而 `.devhome/profiles/web/node_modules/dsh-session-delete` 是指回仓库根目录的
+junction。因此任何朴素的递归扫描（`**/*` glob、`grep -r`、`Get-ChildItem -Recurse`）都会无限
+下探回仓库根；若扫描发生在宿主进程内，还会拖垮该进程以及运行其中的会话。请把每次扫描限定在
+`src/`、`test/` 或 `scripts/`，或排除 `.devhome`、`.git`、`node_modules` 与 `.scratch`。
+`npm run check:tree` 以安全方式遍历目录树（绝不进入链接），并对非开发用途的环路报错。
 
 ```
 npm run check        # 目录树守卫、构建、类型检查、测试

@@ -6,8 +6,7 @@
  * it calls, so a harness upgrade that adds surface area cannot break the build,
  * and every optional capability degrades instead of failing the plugin.
  *
- * Behaviour that matters, with the evidence in
- * `research/session-storage-and-deletion.md`:
+ * Behaviour that matters:
  *
  * - A live session must never be deleted. No plugin can close one (the detach
  *   disposer is owned by the creating fiber), and a live writer simply

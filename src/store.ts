@@ -6,8 +6,10 @@
  * session root for a directory named exactly `encodeSegment(id)`, which is
  * sound because that encoding is injective.
  *
- * Read the reconnaissance notes for the evidence behind each path:
- * `research/session-storage-and-deletion.md` §1, §3.3, §5.
+ * Every path touched here was verified against the on-disk layout of DSH
+ * 0.1.5-rc.2. That layout is not a public contract — a harness upgrade can move
+ * it, and the failure mode is a delete that misses rather than one that hits the
+ * wrong thing.
  */
 
 import { readdir, readFile, rm, stat, writeFile } from 'node:fs/promises'

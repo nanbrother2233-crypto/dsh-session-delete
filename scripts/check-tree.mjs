@@ -205,6 +205,6 @@ if (problems.length > 0) {
     '  ok — no unsanctioned loop\n\n' +
       `RULE: never walk ${display(ROOT)} recursively.\n` +
       '      Exclude .devhome (and .git, node_modules, .scratch) from every scan, glob and grep.\n' +
-      '      See AGENTS.md.\n',
+      '      See the Development section of README.md.\n',
   )
 }

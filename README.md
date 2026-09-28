@@ -135,8 +135,16 @@ provider has to list it — but the command above always works.
 
 ## Development
 
-See [AGENTS.md](AGENTS.md) — including the one rule this repository cannot
-break: the working tree is cyclic, so never walk it recursively.
+**Never walk the working tree recursively.** `.devhome/` is the scratch DSH home
+used to load this plugin without publishing it, and
+`.devhome/profiles/web/node_modules/dsh-session-delete` is a junction back to the
+repository root. A naive recursive scan — a `**/*` glob, `grep -r`,
+`Get-ChildItem -Recurse` — therefore descends into the repository root forever,
+and one performed inside the host process takes that process, and the session
+running in it, down with it. Scope every scan to `src/`, `test/` or `scripts/`,
+or exclude `.devhome`, `.git`, `node_modules` and `.scratch`. `npm run check:tree`
+walks the tree safely, never entering a link, and fails on a loop that is not the
+sanctioned dev one.
 
 ```
 npm run check        # tree guard, build, typecheck, tests
