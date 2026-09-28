@@ -1,0 +1,4 @@
+# Bilingual-pair consistency record. Both languages carry equal authority.
+# Update both files and record their Git blob hashes after editing either side.
+SECURITY.md: 9d33e1472ac7d297338eb655f74a11a48c5cf47d
+SECURITY.zh.md: 45f7d6f1d868ceb9c80f9566f64ee47f2565178f

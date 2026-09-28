@@ -1,0 +1,14 @@
+# Loader layer contributed by dsh-session-delete.
+#
+# This bundle file is what makes the package a *profile layer* rather than a
+# plain dependency: when the package is listed in a profile's
+# `dsh.profile.bundles`, this patch list is applied in that order position and
+# inserts the host half as a loader row. Without it `dsh plugin add` treats the
+# package as an ordinary dependency and it is never loaded.
+#
+# Shape is deliberately minimal — `insert` with `id`/`name` only, no `config`,
+# no `disabled`, no `!!js` — because that is the only shape the market's
+# hot-mount parser accepts.
+- insert:
+    - id: dsh-session-delete
+      name: 'dsh-session-delete'

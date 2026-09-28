@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    // `src`, not `src/client`: the list's nesting walk lives in `src/nest.ts`,
+    // which is shared with the host build and therefore sits above this
+    // project's old root. Declaration paths are unaffected — the entry still
+    // lands at `lib/types/client/index.d.ts`.
+    "rootDir": "src",
+    "outDir": "lib/client-types",
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    // Paired with `rootDir: src`: the client entry must still land at
+    // `lib/types/client/index.d.ts`, which `package.json` points at.
+    "declarationDir": "lib/types",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": []
+  },
+  "include": ["src/client/**/*.ts", "src/client/**/*.tsx"]
+}

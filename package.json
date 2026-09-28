@@ -1,0 +1,105 @@
+{
+  "name": "dsh-session-delete",
+  "version": "0.1.0",
+  "description": "Hard-delete DSH sessions across all workspaces: a side-panel session manager and a per-session delete action, with live-session guards and full cache cleanup",
+  "license": "MIT",
+  "author": "shenhaonan",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nanbrother2233-crypto/dsh-session-delete.git"
+  },
+  "homepage": "https://github.com/nanbrother2233-crypto/dsh-session-delete#readme",
+  "bugs": {
+    "url": "https://github.com/nanbrother2233-crypto/dsh-session-delete/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "types": "./lib/types/client/index.d.ts",
+      "default": "./lib/client.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-primitives",
+        "@deepseek-ai/dsh-client-ui-session",
+        "@deepseek-ai/dsh-client-ui-conversation",
+        "@deepseek-ai/dsh-client-ui-sidebar-right"
+      ]
+    }
+  },
+  "files": [
+    "lib/**",
+    "!lib/nest.js",
+    "!lib/types/nest.d.ts",
+    "cordis.patch.yml",
+    "LICENSE",
+    "README.md",
+    "README.zh.md",
+    "README.i18n.yaml",
+    "SECURITY.md",
+    "SECURITY.zh.md",
+    "SECURITY.i18n.yaml"
+  ],
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "scripts": {
+    "clean": "node scripts/clean.mjs",
+    "build": "node scripts/clean.mjs && tsdown && tsc -p tsconfig.json && tsc -p tsconfig.client.json",
+    "dev": "tsdown --watch",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.client.json --noEmit",
+    "test": "node scripts/test.mjs",
+    "check:tree": "node scripts/check-tree.mjs",
+    "check": "npm run check:tree && npm run build && npm run typecheck && npm test",
+    "prepack": "npm run check"
+  },
+  "keywords": [
+    "deepseek",
+    "dsh",
+    "plugin",
+    "session",
+    "delete"
+  ],
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "4.0.2",
+    "@deepseek-ai/dsh-home-paths": "0.1.5-rc.2",
+    "react": "18.3.1"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "^4.0.2",
+    "@deepseek-ai/dsh-client-locale": "^0.1.5-rc.2",
+    "@deepseek-ai/dsh-client-store": "^0.1.5-rc.2",
+    "@deepseek-ai/dsh-client-ui-primitives": "^0.1.5-rc.2",
+    "@deepseek-ai/dsh-client-ui-slots": "^0.1.5-rc.2",
+    "@deepseek-ai/dsh-home-paths": "^0.1.5-rc.2",
+    "@deepseek-ai/dsh-host-webserver": "^0.1.5-rc.2",
+    "@deepseek-ai/dsh-session-persistence": "^0.1.5-rc.2",
+    "@deepseek-ai/dsh-session-query": "^0.1.5-rc.2",
+    "@deepseek-ai/dsh-storage-domain": "^0.1.5-rc.2",
+    "@deepseek-ai/dsh-workspace": "^0.1.5-rc.2",
+    "@types/node": "^22.20.4",
+    "@types/react": "^18.3.31",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsdown": "^0.22.2",
+    "typescript": "^5.9.3"
+  }
+}
