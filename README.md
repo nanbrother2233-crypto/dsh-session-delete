@@ -87,33 +87,38 @@ does not sit in front of these.
 
 ## Install
 
-```
-dsh plugin add --save-exact dsh-session-delete@0.1.0
-```
+This plugin is not published to npm. It is built here and installed into a
+profile from this checkout, one of two ways.
 
-Then restart DSH Desktop — desktop activates a new bundle at boot.
-
-The published tarball *is* the plugin: 22 files, ~51 kB compressed. There is no
-build step at install time and no bundled dependency tree — the host half ships
-compiled and imports only Node builtins plus `@deepseek-ai/dsh-home-paths`, and
-the browser half is a prebuilt bundle that requires nothing beyond the three
-platform modules the shell injects. So the same package installs anywhere DSH
-Desktop runs, and nothing from the plugin's development checkout is needed:
+The packed tarball is self-contained:
 
 ```
-npm pack                                        # dsh-session-delete-0.1.0.tgz, ~51 kB
+npm pack                                                     # dsh-session-delete-0.1.0.tgz, ~55 kB
 dsh plugin add --save-exact .\dsh-session-delete-0.1.0.tgz   # or any copy of that file
 ```
 
-Installing from a checkout instead (`dsh plugin add --save-exact link:D:\path\to\checkout`)
-links the whole working tree into the profile, development directories included;
-that is a convenience for editing the plugin, not a requirement for using it.
+Linking the working tree is what you want while editing the plugin:
 
-The exact stable version is not a suggestion: the market's install path resolves
-`dsh-session-delete@latest` from npm and requires an exact stable `version` and a
-valid `dsh.bundle.patch`, both of which this package declares. Publishing to npm
-does not by itself put the plugin in the built-in Community Market — a catalog
-provider has to list it — but the command above always works.
+```
+dsh plugin add --save-exact link:D:\path\to\checkout
+```
+
+Either way, restart DSH Desktop afterwards — desktop activates a new bundle at
+boot — and either way `dsh-session-delete` is added to the profile's
+`dsh.profile.bundles` layer list for you.
+
+The packed tarball *is* the plugin: 22 files, ~55 kB compressed. There is no
+build step at install time and no bundled dependency tree — the host half ships
+compiled and imports only Node builtins plus `@deepseek-ai/dsh-home-paths`, and
+the browser half is a prebuilt bundle that requires nothing beyond the three
+platform modules the shell injects. So the tarball installs anywhere DSH Desktop
+runs, with nothing from the development checkout. Linking instead pulls in the
+whole working tree, development directories included.
+
+> **Never install this by bare package name.** `dsh plugin add dsh-session-delete`
+> resolves an unrelated plugin that occupies that name on npm, published from
+> `vtxf/dsh-session-delete` — not this one. The name is taken, which is also why
+> this package is not on npm; both commands above therefore name a path.
 
 ## Requirements
 
@@ -148,7 +153,7 @@ sanctioned dev one.
 
 ```
 npm run check        # tree guard, build, typecheck, tests
-npm pack --dry-run   # what would actually be published
+npm pack --dry-run   # what would actually be packed
 ```
 
 ## License

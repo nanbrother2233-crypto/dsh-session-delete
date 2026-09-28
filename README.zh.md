@@ -67,28 +67,33 @@ harness 的 webserver 在分发前不做鉴权、也不做来源检查：**精�
 
 ## 安装
 
-```
-dsh plugin add --save-exact dsh-session-delete@0.1.0
-```
+本插件没有发布到 npm。它在本目录构建，再从本目录装进 profile，有两条路。
 
-然后重启 DSH Desktop——桌面端只在启动时激活新的 bundle。
-
-发布出来的 tarball **就是插件本体**：22 个文件、压缩后约 51 kB。安装时没有任何构建步骤，也不
-自带依赖树——宿主半边是编译好的，运行时只 import Node 内置模块与 `@deepseek-ai/dsh-home-paths`；
-浏览器半边是预打包产物，除了 shell 注入的三个平台模块外什么都不 require。因此同一个包可以装到
-任何跑得动 DSH Desktop 的机器上，完全不需要插件的开发目录：
+一是装打包好的 tarball（自包含）：
 
 ```
-npm pack                                        # 得到 dsh-session-delete-0.1.0.tgz，约 51 kB
+npm pack                                                     # 得到 dsh-session-delete-0.1.0.tgz，约 55 kB
 dsh plugin add --save-exact .\dsh-session-delete-0.1.0.tgz   # 或这个文件的任意一份拷贝
 ```
 
-如果改成从源码目录安装（`dsh plugin add --save-exact link:D:\path\to\checkout`），会把整个工作
-树链接进 profile，连开发目录一起——那是改插件时图方便，不是使用它的必要条件。
+二是直接链接工作树（改插件时用这条）：
 
-精确的稳定版本号不是建议：市场的安装路径会从 npm 解析 `dsh-session-delete@latest`，并要求
-`version` 是精确的稳定版本、且 `dsh.bundle.patch` 有效，本包两者都已声明。发布到 npm 本身
-并不会让插件出现在内置社区市场里——那需要一个 catalog provider 收录它——但上面的命令始终可用。
+```
+dsh plugin add --save-exact link:D:\path\to\checkout
+```
+
+两种方式都需要之后重启 DSH Desktop——桌面端只在启动时激活新的 bundle——也都
+会自动把 `dsh-session-delete` 加进 profile 的 `dsh.profile.bundles` 层列表。
+
+打包出来的 tarball **就是插件本体**：22 个文件、压缩后约 55 kB。安装时没有任何构建步骤，也不
+自带依赖树——宿主半边是编译好的，运行时只 import Node 内置模块与 `@deepseek-ai/dsh-home-paths`；
+浏览器半边是预打包产物，除了 shell 注入的三个平台模块外什么都不 require。因此这个 tarball 可以
+装到任何跑得动 DSH Desktop 的机器上，完全不需要插件的开发目录；而 link 方式会把整个工作树
+（连开发目录）一并链接进去。
+
+> **绝不要用裸包名安装。** `dsh plugin add dsh-session-delete` 解析到的是 npm 上占用该名字的另一个
+> 插件（来自 `vtxf/dsh-session-delete`），不是本插件。这个名字已被占用，这也是本包不在 npm 上的
+> 原因——所以上面两条命令写的都是路径。
 
 ## 环境要求
 
@@ -115,7 +120,7 @@ junction。因此任何朴素的递归扫描（`**/*` glob、`grep -r`、`Get-Ch
 
 ```
 npm run check        # 目录树守卫、构建、类型检查、测试
-npm pack --dry-run   # 实际会被发布的内容
+npm pack --dry-run   # 实际会被打包的内容
 ```
 
 ## 许可证
